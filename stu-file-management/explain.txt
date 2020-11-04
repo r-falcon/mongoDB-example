@@ -1,0 +1,73 @@
+目标：模板引擎的应用，强化node.js项目制作流程
+知识点：http请求响应、数据库、模板引擎、静态资源访问
+
+制作流程：
+  1.建立项目文件夹并生成项目描述文件
+  2.创建网站服务器实现客户端和服务器端通信
+  3.连接数据库并根据需求设计学员信息表
+  4.创建路由并实现页面模板呈递
+  5.实现静态资源访问
+  6.实现学生信息添加功能
+  7.实现学生信息展示功能
+
+操作步骤：
+  1.创建stu-file-management文件夹
+  2.切换到stu-...目录初始化：'cnpm init -y',则会在当前目录下生成package.json文件
+  3.在stu文件夹下创建app.js文件:
+    (1)创建服务器
+      // 引入http模块
+      const http = require('http')
+      // 创建网站服务器
+      const app = http.createServer()
+      // 客户端发送请求处理
+      app.on('request',(req,res) =>{
+        res.end('ok')
+      })
+      // 监听一个端口
+      app.listen(3000)
+      console.log('服务器启动成功！');
+
+    (2)数据库连接
+      安装mongoose模块："cnpm install mongoose"
+      // 引入mongoose模块
+      const mongoose = require('mongoose') 
+      // 连接数据库
+      mongoose.connect('mongodb://localhost/stuDB',{
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      })
+      .then(()=>console.log('数据库连接成功！'))
+      .catch(res => console.log(res,'数据库连接失败！'))
+      将数据库连接新建一个单独的model模块，然后在导入到app.js中
+    4.在model中建立user.js设计学生信息表
+      (1) 引入mongoose,创建集合规则和集合
+      (2) 将创建的集合导出并导入到app.js中
+    5.第三方模块router
+      使用步骤：
+      (1)安装router模块：cnpm install router
+      (2)获取路由对象
+      (3)调用路由对象提供的方法创建路由
+      (4)启用路由，使路由生效
+    6.呈现add和list页面，下载art-template
+      (1)stu...创建views文件夹，用于放模板文件
+      (2)新建public文件夹用于放静态资源文件
+      (3)模板引擎引入app.js中,然后配置模板的根目录和模板默认后缀(注：需引入path模块)
+      (4)使用模板引擎将模板通过路由方式呈现出来
+      (5)对静态资源进行处理：第三方模块，serve-static(实现静态资源访问服务功能)
+        使用步骤：
+          引入serve-static模块获取创建静态资源服务功能的方法
+          调用方法创建静态资源服务并指定静态资源服务目录
+          启用静态资源服务功能
+    7.实现学生信息的添加
+      (1)在模板的表单中指定请求地址与请求方式 在index.art的form表单中修改
+      (2)为每一个表单添加name属性
+      (3)添加实现学生信息的路由
+      (4)接收客户端传递过来的学生信息
+      (5)将学生信息添加到数据库中
+      (6)将页面重定向到学生信息列表页面
+    8.学生信息列表页展示
+      (1)从数据库中将所有的学生信息查询出来
+      (2)通过模板引擎将学生信息和HTML模板进行拼接
+      (3)将拼接好的HTML模板响应给客户端
+      (4)规范时间显示格式，用dateformat
+    9.代码模块化规范
